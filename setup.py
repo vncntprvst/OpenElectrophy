@@ -1,38 +1,78 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from setuptools import setup
 import os
 
-long_description = open("README.rst").read()
-install_requires = ['numpy>=1.3.0',
-                    'quantities>=0.9.0']
+from setuptools import setup, find_packages
 
-if os.environ.get('TRAVIS') == 'true' and \
-    os.environ.get('TRAVIS_PYTHON_VERSION').startswith('2.6'):
-    install_requires.append('unittest2>=0.5.1')
+from OpenElectrophy.version import version
+
+long_description = open("README.txt").read()
+
+
+if os.name == 'nt':
+    scripts = ['startOpenElectrophy.py',]
+    entry_points = {
+                                'gui_scripts' : [ 'startOpenElectrophy = startOpenElectrophy'],
+                            }
+else:
+    scripts = ['startOpenElectrophy.py']
+    entry_points = None
+
+
+install_requires=[
+                'numpy>=1.3.0',
+                'quantities>=0.9.0',
+                'neo>=0.3',
+                'scipy>=0.9.0',
+                'matplotlib>=1.1.0',
+                'sqlalchemy>=0.7',
+                'sqlalchemy-migrate>=0.7',
+                'pyqtgraph>=0.9.3',
+                'guidata>=1.4.1',
+                'joblib>=0.6.4',
+                'tables>=2.3.1',
+                'pywavelets>=0.2.2',
+                'scikit-learn>=0.11',
+                'blosc',
+                ]
+
+#~ numexpr
+
+# these are optional because hard to instal on win32:
+   #~ 'MySQLdb (>=1.2.3)',
+   #~ 'psycopg2',
+   #~ 'blosc',
+   #~ 'snappy',
+   #~ 'lz4',
+
 
 setup(
-    name = "neo",
-    version = '0.4.0dev',
-    packages = ['neo', 'neo.core', 'neo.io', 'neo.test', 'neo.test.iotest'],
-    install_requires=install_requires,
-    author = "Neo authors and contributors",
-    author_email = "sgarcia at olfac.univ-lyon1.fr",
-    description = "Neo is a package for representing electrophysiology data in Python, together with support for reading a wide range of neurophysiology file formats",
+    name = "OpenElectrophy",
+    version = version,
+    packages = find_packages(),
+    scripts = scripts,
+    entry_points = entry_points,
+    include_package_data=True,
+    install_requires = install_requires,
+    requires = [ ],
+    author = "OpenElectrophy authors and contributors",
+    author_email = "sam.garcia.die@gmail.com",
+    maintainer = "Samuel Garcia",
+    maintainer_email = "sam.garcia.die@gmail.com",
     long_description = long_description,
-    license = "BSD-3-Clause",
-    url='http://neuralensemble.org/neo',
-    classifiers = [
-        'Development Status :: 4 - Beta',
+    url = 'http://packages.python.org/OpenElectrophy/',
+    license = "BSD",
+    description = "OpenElectrophy : an electrophysiological data- and analysis-sharing framework",
+    classifiers=['Development Status :: 3 - Alpha',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2',
-                   'Programming Language :: Python :: 2.6',
-                   'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-                   'Programming Language :: Python :: 3.3',
-        'Topic :: Scientific/Engineering']
+        'Topic :: Scientific/Engineering :: Bio-Informatics'
+        ],
 )
+
+
+
+
